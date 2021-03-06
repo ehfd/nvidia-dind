@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nvidia-dind
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nvidia-dind
+  template:
+    metadata:
+      labels:
+        app: nvidia-dind
+    spec:
+      hostname: nvidia-dind
+      containers:
+      - name: nvidia-dind
+        image: ehfd/nvidia-dind:latest
+        stdin: true
+        tty: true
+        securityContext:
+          privileged: true
+        resources:
+          limits:
+            memory: 64Gi
+            cpu: "16"
+            nvidia.com/gpu: 1
+          requests:
+            memory: 100Mi
+            cpu: 100m
