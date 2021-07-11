@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
         curl \
         iptables \
         git \
-        gnupg-utils \
+        gnupg \
         supervisor && \
     rm -rf /var/lib/apt/list/*
 
