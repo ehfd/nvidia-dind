@@ -7,5 +7,5 @@ Isolated DinD (Docker in Docker) container for developing and deploying docker c
 Host is required to have the NVIDIA container toolkit installed and set up. Privileged mode is required like any other DinD container with root requirement.
 
 ```
-docker run --gpus 1 -it --privileged ghcr.io/ehfd/nvidia-dind
+docker run --gpus 1 -it --privileged ghcr.io/ehfd/nvidia-dind:latest
 ```
