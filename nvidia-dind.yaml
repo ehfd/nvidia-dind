@@ -15,7 +15,7 @@ spec:
       hostname: nvidia-dind
       containers:
       - name: nvidia-dind
-        image: ehfd/nvidia-dind:latest
+        image: ghcr.io/ehfd/nvidia-dind:latest
         stdin: true
         tty: true
         securityContext:
