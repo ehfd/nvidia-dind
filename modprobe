@@ -1,7 +1,10 @@
 #!/bin/sh
-set -eu
 
-# https://twitter.com/lucabruno/status/902934379835662336
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+set -eu
 
 # Docker often uses "modprobe -va foo bar baz"
 # so we ignore modules that start with "-"
