@@ -1,8 +1,5 @@
 #!/bin/sh
-
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# Logger from this post http://www.cubicrace.com/2016/03/log-tracing-mechnism-for-shell-scripts.html
 
 function INFO(){
     local function_name="${FUNCNAME[1]}"
