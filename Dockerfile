@@ -42,6 +42,8 @@ RUN mkdir -pm755 /etc/apt/keyrings && curl -o /etc/apt/keyrings/docker.asc -fsSL
 
 COPY modprobe entrypoint.sh /usr/local/bin/
 RUN chmod -f 755 /usr/local/bin/entrypoint.sh /usr/local/bin/modprobe
+COPY supervisord.conf /etc/supervisord.conf
+RUN chmod -f 755 /etc/supervisord.conf
 
 VOLUME /var/lib/docker
 
