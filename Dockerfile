@@ -13,7 +13,6 @@ LABEL maintainer="https://github.com/ehfd"
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean && apt-get update && apt-get dist-upgrade -y && apt-get install --no-install-recommends -y \
-        apt-transport-https \
         apt-utils \
         ca-certificates \
         openssh-client \
