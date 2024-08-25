@@ -7,3 +7,5 @@ Host is required to have the NVIDIA container toolkit installed and set up. Priv
 ```bash
 docker run --gpus 1 -it --privileged ghcr.io/ehfd/nvidia-dind:latest
 ```
+
+Use `-e DOCKERD_FLAG=` to append command-line flags to `dockerd`.
