@@ -1,3 +1,9 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Publish container
+
 on:
   workflow_dispatch:
   push:
@@ -9,30 +15,55 @@ env:
   IMAGE_NAME: ehfd/nvidia-dind
 jobs:
   build:
+    name: Build and push Ubuntu ${{ matrix.os_version }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        include:
+        - os_version: "20.04"
+        - os_version: "22.04"
+        - os_version: "24.04"
+          latest_tag: true
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Fetch commit time
+      run: echo "COMMIT_TIME_GIT=$(TZ=UTC git show -s --format='%cd' --date=format-local:'%Y%m%d%H%M%S')" >> "$GITHUB_ENV"
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
     - name: Log into registry ${{ env.REGISTRY }}
-      if: github.event_name != 'pull_request'
+      if: ${{ github.event_name != 'pull_request' }}
       uses: docker/login-action@v3
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Extract Container metadata
+
+    - name: Extract container metadata
       id: meta
       uses: docker/metadata-action@v5
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-    - name: Build and push Container image
+
+    - name: Build and push Ubuntu ${{ matrix.os_version }} container image
       uses: docker/build-push-action@v5
       with:
+        build-args: |
+          DISTRIB_RELEASE=${{ matrix.os_version }}
         context: .
+        labels: ${{ steps.meta.outputs.labels }}
+        no-cache: true
         push: ${{ github.event_name != 'pull_request' }}
         tags: |
-          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-        labels: ${{ steps.meta.outputs.labels }}
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.os_version }}
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.os_version }}-${{ env.COMMIT_TIME_GIT }}
+          ${{ matrix.latest_tag && format('{0}/{1}:latest', env.REGISTRY, env.IMAGE_NAME) || '' }}
