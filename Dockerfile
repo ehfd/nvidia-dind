@@ -36,6 +36,8 @@ RUN mkdir -pm755 /etc/apt/keyrings && curl -o /etc/apt/keyrings/docker.asc -fsSL
         containerd.io \
         docker-buildx-plugin \
         docker-compose-plugin \
+        pigz \
+        xz-utils \
         nvidia-container-toolkit && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/debconf/* /var/log/* /tmp/* /var/tmp/* && \
     nvidia-ctk runtime configure --runtime=docker
